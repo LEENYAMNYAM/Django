@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+<div class="container">
+    <h2> List</h2>
+
+    <table class="table">
+    <thead class="table-primary">
+      <tr>
+        <th>번호</th>
+        <th>제목</th>
+        <th>작성자</th>
+        <th>작성일</th>
+        <th>조회수</th>
+        <th>첨부파일</th>
+        <th>파일이미지</th>
+        <th>다운로드</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for board in boardList %}
+            <tr>
+                <td>{{board.id}}</td>
+                <td><a href="/detail/{{board.id}}">{{board.title}}</a> // <a href="{% url 'view' board.id %}">{{board.title}}</a></td>
+                <td>{{board.writer}}</td>
+                <td>{{board.post_date|date:'Y-m-d H:i'}}</td>
+                <td>{{board.hit}}</td>
+                <td>{{board.filename}}</td>
+                <td>
+                    {% if board.filesize > 0 %}
+                        <span class="_imgs" data-url="/download_count?idx={{board.idx}}">
+                            <img src="{% static 'images/file.jpg' %}">    
+                        </span>
+                        {% endif %}
+                </td>
+                <td class="downCount">{{board.down}}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+
+</div>
+{% endblock %}
+
+{% block script %}
+    <script>    
+        const imgs = document.querySelectorAll("._imgs")
+        imgs.forEach(function(img){
+            img.addEventListener('click', function(){
+                const url = this.getAttribute('data-url')
+                fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    this.parentElement.parentElement.querySelector(".downCount").textContent = data.count
+                    location.href="/download?idx="+data.idx
+                })
+            })
+        })
+    </script>
+{% endblock %}

@@ -7,27 +7,50 @@
 </head>
 <body>
     <h3>Detail /// <a href="/list">전체보기</a></h3>
-    id : {{dto.idx}} <br/>
-    hit : {{dto.hit}} <br/>
-    title : {{dto.title}} <br/>
-    writer : {{dto.writer}}  <br/>
-    content : {{dto.content}} <br/>
-    date : {{dto.post_date}} <br/>
-    file : {{dto.filename}} <br/> 
 
-    <a href="/update_form/{{dto.idx}}">수정</a>
-    <a href="/delete/{{dto.idx}}">삭제</a>
+    <div class="container mt-5">
+    <h3 class="mb-4">📄 게시글 상세 보기 
+        <a href="/list/" class="btn btn-sm btn-outline-secondary float-end">전체 목록</a>
+    </h3>
 
-    <br/><br/>
-    <h4> Comment</h4>
-    <form action ="/comment_insert/" method = "post">
-        <input type="hidden" name="idx" value="{{dto.idx}}"/>
-        <textarea name="content" rows ="5" cols="50" placeholder="Comment Insert"></textarea>
-        <button type="submit">댓글전송</button>
-    </form>
+    <table class="table table-bordered bg-white">
+        <tr><th>번호</th><td>{{ dto.idx }}</td></tr>
+        <tr><th>조회수</th><td>{{ dto.hit }}</td></tr>
+        <tr><th>제목</th><td>{{ dto.title }}</td></tr>
+        <tr><th>작성자</th><td>{{ dto.writer }}</td></tr>
+        <tr><th>내용</th><td>{{ dto.content }}</td></tr>
+        <tr><th>작성일</th><td>{{ dto.post_date }}</td></tr>
+        <tr><th>첨부파일</th><td>{{ dto.filename }}</td></tr>
+    </table>
+
+    <div class="mb-4">
+        <a href="/update_form/{{ dto.idx }}" class="btn btn-warning">수정</a>
+        <a href="/delete/{{ dto.idx }}" class="btn btn-danger">삭제</a>
+    </div>
+
     <hr/>
-    {% for comment in commentList %}
-    {{comment.writer}} // {{comment.post_date}} // {{comment.content}} <br/>
-    {% endfor %}
+
+    <h4>💬 댓글</h4>
+    <form action="/comment_insert/" method="post" class="mb-4">
+        {% csrf_token %}
+        <input type="hidden" name="idx" value="{{ dto.idx }}">
+        <div class="mb-3">
+        <textarea name="content" rows="3" class="form-control" placeholder="댓글을 입력하세요"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">댓글 등록</button>
+    </form>
+
+    <ul class="list-group">
+        {% for comment in commentList %}
+        <li class="list-group-item">
+            <strong>{{ comment.writer }}</strong> 
+            <span class="text-muted">({{ comment.post_date }})</span><br/>
+            {{ comment.content }}
+        </li>
+        {% empty %}
+        <li class="list-group-item text-muted">등록된 댓글이 없습니다.</li>
+        {% endfor %}
+    </ul>
+    </div>  
 </body>
 </html>

@@ -2,7 +2,10 @@ from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.http.response import JsonResponse, HttpResponse
 from myApp01.models import Board, Comment
+from django.db.models import Q
 import urllib.parse
+import math
+
 # Create your views here.
 
 UPLOAD_DIR = "D:/JMT/Django/workspace/upload/"
@@ -36,14 +39,75 @@ def insert(request):
     dto.save()
     return redirect("/list/")
 
-# 전체보기 (list)
+# 전체보기 (list)(기본)
+# def list(request):
+#     boardList = Board.objects.all()
+#     boardCount = Board.objects.all().count
+#     print('boardListquery : ', boardList.query)
+#     context = {'boardList' : boardList,
+#                'boardCount' : boardCount}
+#     return render(request, 'board/list.html', context)
+
+# 전체보기 (list)(검색)
 def list(request):
-    boardList = Board.objects.all()
-    boardCount = Board.objects.all().count
+    word = request.GET.get('word','')
+    field = request.GET.get('field', 'title')
+    page = request.GET.get('page', '1')
+
+    print("검색 필드:", field)
+    print("검색어:", word)
+
+    #갯수
+    if field == 'all' : 
+        boardList = Board.objects.filter(Q(writer__contains = word)|
+                                          Q(title__contains = word)|
+                                          Q(content__contains = word)).order_by('-idx')
+        boardCount = Board.objects.filter(Q(writer__contains = word)|
+                                          Q(title__contains = word)|
+                                          Q(content__contains = word)).count()
+    elif field == 'writer':
+        boardList = Board.objects.filter(Q(writer__contains = word)).order_by('-idx') 
+        boardCount = Board.objects.filter(Q(writer__contains = word)).count()
+    elif field == 'title':
+        boardList = Board.objects.filter(Q(title__contains = word)).order_by('-idx')
+        boardCount = Board.objects.filter(Q(title__contains = word)).count()
+    elif field == 'content':
+        boardList = Board.objects.filter(Q(content__contains = word)).order_by('-idx')
+        boardCount = Board.objects.filter(Q(content__contains = word)).count()
+    else :
+        boardList = Board.objects.all().order_by('-idx')
+        boardCount = Board.objects.all().count()
+
+    #page
+    ### 123[다음]   [이전] 456[다음]   [이전] 7(89)
+    blockPage = 3
+    pageSize = 5
+    currentPage = int(page)
+    # 총 페이지수
+    totPage = math.ceil(boardCount/pageSize)
+    print("totPage : ", totPage)
+    startPage = math.floor((currentPage-1)/blockPage)*blockPage + 1
+    print("startPage : ", startPage)
+    endPage = startPage + blockPage - 1
+    print("endPage : ", endPage)
+    if endPage > totPage :
+        endPage = totPage
+    start = (currentPage - 1)*pageSize
+    boardList = boardList[start:start+pageSize]
+
     print('boardListquery : ', boardList.query)
     context = {'boardList' : boardList,
-               'boardCount' : boardCount}
+               'boardCount' : boardCount,
+               'field' : field,
+               'word' : word,
+               'startPage' : startPage,
+               'blockPage' : blockPage,
+               'currentPage' : currentPage,
+               'endPage' : endPage,
+               'totPage' : totPage,
+               'range' : range(startPage, endPage+1)}
     return render(request, 'board/list.html', context)
+
 
 # 상세보기 (detail_idx) /detail_idx?idx=1
 def detail_idx(request):

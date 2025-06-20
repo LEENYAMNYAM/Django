@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container">
+    <h2> detail</h2>
+    <a href="/list/" class="btn btn-sm btn-outline-secondary float-end">전체 목록</a>
+  </h3>
+
+  <table class="table table-bordered bg-white">
+    <tr>
+        <th>글번호</th> <td>{{ dto.id }}</td>
+    </tr>
+    <tr>
+        <th>조회수</th> <td>{{ dto.hit }}</td>
+    </tr>
+    <tr>
+        <th>제목</th> <td>{{ dto.title }}</td>
+    </tr>
+    <tr>
+        <th>작성자</th> <td>{{ dto.writer }}</td>
+    </tr>
+    <tr> 
+        <th>내용</th> <td>{{ dto.content }}</td>
+    </tr>
+    <tr>
+        <th>작성일</th> <td>{{ dto.post_date }}</td>
+    </tr>
+    <tr>
+        <th>첨부파일</th> <td>{{ dto.filename }}</td>
+    </tr>
+  </table>
+
+  <div class="mb-4">
+    <a href="/update_form/{{ dto.idx }}" class="btn btn-secondary">수정</a>
+    <a href="/delete/{{ dto.idx }}" class="btn btn-danger">삭제</a>
+  </div>
+
+</div>
+{% endblock %}
