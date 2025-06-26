@@ -4,17 +4,11 @@
 {% block content %}
 <div class="container mt-3">
  
- <h2>BOARD LIST ({{bcount}})</h2>
+ <h2>BOARD LIST ({{boardCount}})</h2>
 
  <div class="mb-3 d-flex justify-content-end " >
-    <form method="get" action="/list" class="d-inline-flex">
-        <select name="field" id="field" class="form-control mr-sm-1">
-          <option value="title">제목</option>
-          <option value="writer">작성자</option>form-inline
-          <option value="content">내용</option>
-          <option value="all">제목+작성자+내용</option>
-        </select>
-        <input class="form-control mr-2" type="text" placeholder="Search" id="word" name="word">
+    <form method="get" action="/list_p" class="d-inline-flex">
+        <input class="form-control mr-2" type="text" placeholder="Search" id="word" name="word" value="{{word}}">
         <button class="btn btn-secondary">Searh</button> 
     </form>
  </div>
@@ -33,7 +27,7 @@
       </tr>
     </thead>
     <tbody>
-      {%  for board  in blist %}
+      {%  for board  in page_list %}
       <tr>
         <td>{{board.id}}</td>
         <td>{{board.writer}}</td>
@@ -58,20 +52,15 @@
 
     <ul class="pagination">
       <!--이전-->
-      {% if startPage > blockPage %}
-        <li class="page-item"><a class="page-link" href="?page={{startPage|add:-3}}">이전</a></li>
+      {% if page_list.has_previous %}
+        <li class="page-item">
+          <a class="page-link" 
+              href="?page={{page_list.previous_page_number}}&word={{word}}">이전</a>
+        </li>
       {% endif %}
-      <!--페이지 번호-->
-      {% for i in  range%}
-        {% if i == currentPage %}
-           <li class="page-item active"><a class="page-link" href="#">{{i}}</a></li>
-        {% else %}
-          <li class="page-item"><a class="page-link" href="?page={{i}}">{{i}}</a></li>
-        {% endif %}
-      {% endfor %}
       <!--다음-->
-      {% if endPage < totPage %}
-        <li class="page-item"><a class="page-link" href="?page={{endPage|add:1}}">다음</a></li>
+      {% if page_list.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{page_list.next_page_number}}&word={{word}}">다음</a></li>
       {% endif %}
     </ul>
 </div>

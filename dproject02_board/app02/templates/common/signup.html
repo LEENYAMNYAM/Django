@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-2">
+    <h2>회원가입</h2>
+
+    <form method="post">
+    {% csrf_token %}
+    {% include "form_errors.html" %}
+    <div class="mb-3 mt-3">
+        <label for="username" class="form-label">Username:</label>
+        <input type="text" class="form-control" id="username" 
+                name="username" placeholder="Enter username">
+    </div>    
+    <div class="mb-3">
+        <label for="pwd" class="form-label">Password:</label>
+        <input type="password" class="form-control" id="pwd" 
+                placeholder="Enter password" name="password1">
+    </div>
+    <div class="mb-3">
+        <label for="pwd2" class="form-label">PasswordConfirm:</label>
+        <input type="password" class="form-control" id="pwd2" 
+                placeholder="Enter password" name="password2">
+    </div>
+    <div class="mb-3">
+        <label for="email" class="form-label">Email:</label>
+        <input type="email" class="form-control" id="email" 
+                placeholder="Enter email" name="email">
+    </div>
+    <button type="submit" class="btn btn-primary">Join</button>
+    </form>
+
+</div>
+{% endblock %}
+
+{% block script %}
+{% endblock %}
