@@ -126,6 +126,7 @@ STATICFILES_DIRS = [
 ]
 
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
+TEMPLATE_DIR = os.path.join(BASE_DIR, 'app03/templates')
 
 
 # Default primary key field type

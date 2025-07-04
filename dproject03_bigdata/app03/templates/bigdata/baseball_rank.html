@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container my-3">
+    <h3>KBO_RANK</h3>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>순위</th>
+                <th>팀명</th>
+                <th>승률</th>
+                <th>게임차</th>
+                <th>승</th>
+                <th>무</th>
+                <th>패</th>
+                <th>경기</th>
+                <th>연속</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for m  in  data %}
+            <tr>
+                <td>{{m.rank}}</td>
+                <td>{{m.team}}</td>
+                <td>{{m.rate}}</td>
+                <td>{{m.game_behind}}</td>
+                <td>{{m.win}}</td>
+                <td>{{m.draw}}</td>
+                <td>{{m.lose}}</td>
+                <td>{{m.total_game}}</td>
+                <td>{{m.streak}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

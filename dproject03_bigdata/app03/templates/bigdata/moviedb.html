@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load  static %}
+{% block content %}
+
+
+    <div class="container my-3">
+        <h3>NAVER_MOVIE_DB</h3>
+        <img src ="{% get_static_prefix %}images/{{image_data}}" 
+        width="600" height="400">     
+    </div>
+    <!-- {{data}} -->
+    <br/><br/>
+    {% for i in data %}
+        {{i.title}} // {{i.avg_grade}} <br/>
+    {% endfor %}
+
+{% endblock %}  

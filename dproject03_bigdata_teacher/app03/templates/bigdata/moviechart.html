@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load  static %}
+{% block content %}
+
+
+<div class="container my-3">
+    <h3>NAVER_MOVIE_CHART</h3>
+
+    <!-- <img src ="{% static 'images/movie_naver_bar.png' %}" width="600" height="400"> -->
+    <img src ="{% get_static_prefix %}images/{{image_data.grade_bar}}" 
+    width="600" height="400"> 
+
+    <img src ="{% get_static_prefix %}images/{{image_data.grade_pie}}" 
+    width="600" height="400"> 
+
+    <img src ="{% get_static_prefix %}images/{{image_data.count_pie}}" 
+    width="600" height="400">
+</div>
+{% endblock %}  

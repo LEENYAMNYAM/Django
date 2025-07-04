@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container my-3">
+    <h3>NAVER_MOVIE</h3>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>순위</th>
+                <th>영화제목</th>
+                <th>별점</th>
+                <th>누적관객수</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for rank, title, grade, count  in  data %}
+            <tr>
+                <td>{{rank}}</td>
+                <td>{{title}}</td>
+                <td>{{grade}}</td>
+                <td>{{count}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

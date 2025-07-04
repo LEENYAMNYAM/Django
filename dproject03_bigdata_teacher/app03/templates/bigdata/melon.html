@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container my-3">
+    <h3>MELON</h3>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>순위</th>
+                <th>곡명</th>
+                <th>가수</th>
+                <th>앨범</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for rank, song, singer, album  in  data %}
+            <tr>
+                <td>{{rank}}</td>
+                <td>{{song}}</td>
+                <td>{{singer}}</td>
+                <td>{{album}}</td>
+            </tr>
+            {% endfor %}
+            {% for i in data %}
+                <tr>
+                <td>{{i.0}}</td>
+                <td>{{i.1}}</td>
+                <td>{{i.2}}</td>
+                <td>{{i.3}}</td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+</div>
+{% endblock %}
